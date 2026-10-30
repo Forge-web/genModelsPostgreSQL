@@ -2,7 +2,7 @@ import { integer, numeric, pgTable, uuid } from "drizzle-orm/pg-core";
 import { genId, genTimestamp } from "./helpers/columns.helpers";
 import { users } from "./users";
 import { organizations } from "./organizations";
-import { paymentTypes } from "./paymetTypes";
+import { paymentTypes } from "./payment_types";
 
 export const receipts = pgTable("receipts", {
 	...genId,

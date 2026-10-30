@@ -1,7 +1,14 @@
-import { bigint, numeric, pgTable, uuid } from "drizzle-orm/pg-core";
+import {
+	bigint,
+	integer,
+	numeric,
+	pgTable,
+	uuid,
+} from "drizzle-orm/pg-core";
 import { genId, genTimestamp } from "./helpers/columns.helpers";
 import { products } from "./products";
 import { invoice } from "./invoice";
+import { SQL, sql } from "drizzle-orm";
 
 export const productItems = pgTable("product_items", {
 	...genId,
@@ -16,6 +23,11 @@ export const productItems = pgTable("product_items", {
 		scale: 2,
 	}).notNull(),
 	price: numeric("price", { precision: 10, scale: 2 }),
-	quantity_sum: numeric("quantity_sum", { precision: 10, scale: 2 }),
+	quantity_sum: numeric("quantity_sum", {
+		precision: 10,
+		scale: 2,
+	}).generatedAlwaysAs(
+		(): SQL => sql`${productItems.quantity} * ${productItems.price}`,
+	),
 	...genTimestamp,
 });

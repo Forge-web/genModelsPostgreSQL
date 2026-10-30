@@ -6,7 +6,7 @@ import {
 	pgTable,
 	varchar,
 } from "drizzle-orm/pg-core";
-import { productTypes } from "./productTypes";
+import { productTypes } from "./product_types";
 import { genTimestamp } from "./helpers/columns.helpers";
 
 export const products = pgTable("products", {
