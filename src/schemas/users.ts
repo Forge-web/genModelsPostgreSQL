@@ -1,10 +1,21 @@
-import { pgTable, text, varchar } from "drizzle-orm/pg-core";
+import { index, pgTable, text, varchar } from "drizzle-orm/pg-core";
 import { genId, genTimestamp } from "./helpers/columns.helpers";
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
 
-export const users = pgTable("users", {
-	...genId,
-	username: varchar("username", { length: 50 }).notNull().unique(),
-	email: varchar("email", { length: 120 }).notNull().unique(),
-	password_hash: text("password_hash").notNull(),
-	...genTimestamp,
-});
+export const users = pgTable(
+	"users",
+	{
+		...genId,
+		username: varchar("username", { length: 50 }).notNull().unique(),
+		email: varchar("email", { length: 120 }).notNull().unique(),
+		password_hash: text("password_hash").notNull(),
+		...genTimestamp,
+	},
+	(t) => [
+		index("users_idx").on(t.id),
+		index("users_username").on(t.username),
+	],
+);
+
+export type User = InferSelectModel<typeof users>;
+export type NewUser = InferInsertModel<typeof users>;
